@@ -1,0 +1,2 @@
+Entrambe le classi RNGS e RVMS sono state scritte dall'autore del libro in linguaggio C e successivamente
+sono state tradotte in linguaggio Java.
