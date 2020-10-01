@@ -3,7 +3,6 @@ package distribuzioni;
 import java.lang.Math;
 
 import exceptions.DistributionException;
-import util.Rngs;
 
 /**
  * Questa classe modella le distribuzioni delle richieste che possono arrivare 

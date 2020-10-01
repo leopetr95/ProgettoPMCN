@@ -1,4 +1,4 @@
-package util;
+package distribuzioni;
 
 /* ------------------------------------------------------------------------- 
  * This is a Java library that can be used to evaluate the probability 

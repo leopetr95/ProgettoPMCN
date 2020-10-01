@@ -3,3 +3,6 @@ sono state tradotte in linguaggio Java.
 
 Riferimento online RVMS: http://www.maths.dit.ie/~smorris/DES_1e_SourceCode/rvms.c
 Riferimento online RNGS: http://www.maths.dit.ie/~smorris/DES_1e_SourceCode/rngs.c
+Riferimento online RVGS: http://www.maths.dit.ie/~smorris/DES_1e_SourceCode/rvgs.c
+
+Riferimento online Istogrammi: http://www.maths.dit.ie/~smorris/DES_1e_SourceCode/cdh.c

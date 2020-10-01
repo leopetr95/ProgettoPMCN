@@ -1,4 +1,4 @@
-package util;
+package distribuzioni;
 
 /* This is an Java library for multi-stream random number generation.
  * The use of this library is recommended as a replacement for the Java
