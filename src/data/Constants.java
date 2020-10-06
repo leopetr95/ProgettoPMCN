@@ -2,6 +2,7 @@ package data;
 
 /**
  * Questa classe racchiude la speficica di tutte le costanti necessarie all'interno del progetto
+ * NON USARE E' STATA RIMPIAZZATA DALLA CLASSE CONFIGURATION
  */
 
 public class Constants {
