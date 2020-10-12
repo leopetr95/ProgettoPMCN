@@ -11,7 +11,7 @@ import distribuzioni.Distribution;
 public class Centro1 extends Server{
     
     private Distribution distr = new Distribution();
-    private static double E_t_s = parameters.Configuration.E_t_s_1;
+    static double E_t_s = parameters.Configuration.E_t_s_1;
 
     private static void importResources() {
         /**
