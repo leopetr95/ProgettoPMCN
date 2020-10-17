@@ -37,15 +37,16 @@ void update_state(char task_type, char location,
     if (state == NULL) {
         handle_error_with_exit("error in update state\n");
     }
-    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2) {
+    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
         handle_error_with_exit("error in update state task_type\n");
     }
-    if (location != DIRECT_CLOUD && location != DIRECT_CLOUDLET && location != NOT_DIRECT_CLOUD) {
+    if (location != DIRECT_CASSA && location != DIRECT_DELAY && location != DIRECT_MULTISERVER && location != DIRECT_VERIFY) {
         handle_error_with_exit("error in update state location\n");
     }
+    /*
     state->num_task_arrived++;
-    if (task_type == TASK_TYPE1) {//task tipo 1
-        state->num_task_type1++;
+    if (task_type == TASK_TYPE1) {//task 1 gusto gelato.
+        state->num_task_icecream1++;
 
         if (location == DIRECT_CLOUDLET) {//task type 1 e diretto sulla cloudlet(non interrotto)
             state->n1++;
@@ -59,7 +60,9 @@ void update_state(char task_type, char location,
         } else {//task type 1 e non diretto sul cloud(non interrotto)
             handle_error_with_exit("error\n");
         }
-    } else {//task tipo 2
+    }else if(task_type == TASK_TYPE2){ //task 2 gusti gelato.
+        //do 2 gusti
+    } else { //task 3 gusti gelato.
         state->num_task_type2++;
 
         if (location == DIRECT_CLOUDLET) {//task tipo 2 non interrotto e diretto sulla cloudlet
@@ -76,7 +79,7 @@ void update_state(char task_type, char location,
             handle_error_with_exit("error\n");
         }
     }
-
+    */
     return;
 }
 

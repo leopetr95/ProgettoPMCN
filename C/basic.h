@@ -18,6 +18,12 @@ struct state{//variabili di stato
     int num_balls_icecream_type2;
     int num_balls_icecream_type3;
 
+    int num_task_arrived;
+
+    int num_task_icecream1;
+    int num_task_icecream2;
+    int num_task_icecream3;
+
 };
 //??
 struct last_state{
@@ -83,11 +89,15 @@ struct area{ //tipi di aree (calcolo ottenuto non dall'integrale ma dalla forma 
 #define STREAM_SETUP 60
 
 //constants
-#define TASK_TYPE1 1
-#define TASK_TYPE2 2
-#define DIRECT_CLOUD 1
-#define NOT_DIRECT_CLOUD 2
-#define DIRECT_CLOUDLET 3
+#define TASK_TYPE1 1    //1 gusto gelato
+#define TASK_TYPE2 2    //2 gusti gelato   
+#define TASK_TYPE3 3    //3 gusti gelato
+
+//locazioni all'iterno della rete
+#define DIRECT_CASSA 1          //task diretto alla cassa
+#define DIRECT_VERIFY 2         //task diretto alla verifica dei gusti
+#define DIRECT_MULTISERVER 3    //task diretto al multiserver
+#define DIRECT_DELAY 4          //task diretto al server di Delay
 
 #define SEED_DEFAULT 991102
 #define ALPHA 0.05 //ALPHA= 0.05 NECESSARIO PER INTERVALLO DI CONFIDENZA 
