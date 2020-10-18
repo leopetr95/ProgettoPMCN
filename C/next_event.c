@@ -18,6 +18,7 @@ void update_area(struct state state, struct area *area, double time_current,doub
     if (time_next < 0) {
         handle_error_with_exit("error in update area3\n");
     }
+    //da finire
     /*
     area->system += (time_next - time_current) * (state.n1 + state.n2 + state.n1_cloud + state.n2_cloud);
     area->cloudlet += (time_next - time_current) * (state.n1 + state.n2);
@@ -32,8 +33,7 @@ void update_area(struct state state, struct area *area, double time_current,doub
     return;
 }
 
-void update_state(char task_type, char location,
-                  struct state *state) {//aggiorna le variabili del sistema quando c'è un arrivo di tipo 1 o di tipo 2
+void update_state(char task_type, char location, struct state *state) {//aggiorna le variabili del sistema quando c'è un arrivo di tipo 1, di tipo 2 o di tipo 3
     if (state == NULL) {
         handle_error_with_exit("error in update state\n");
     }
@@ -43,43 +43,61 @@ void update_state(char task_type, char location,
     if (location != DIRECT_CASSA && location != DIRECT_DELAY && location != DIRECT_MULTISERVER && location != DIRECT_VERIFY) {
         handle_error_with_exit("error in update state location\n");
     }
-    /*
+    
     state->num_task_arrived++;
     if (task_type == TASK_TYPE1) {//task 1 gusto gelato.
         state->num_task_icecream1++;
-
-        if (location == DIRECT_CLOUDLET) {//task type 1 e diretto sulla cloudlet(non interrotto)
-            state->n1++;
-            state->num_task_cloudlet++;
-            state->num_task_type1_cloudlet++;
-        } else if (location == DIRECT_CLOUD) {//task type 1 e diretto sul  cloud(non interrotto)
-            state->n1_cloud++;
-            state->num_task_type1_cloud++;
-            state->num_task_cloud++;
-            state->num_task_directed_on_cloud++;
+        if(location == DIRECT_CASSA) { //arrivo task gelato 1 gusto verso cassa
+            state->num_user_cassa++;
+            state->num_user_total++;
+        } else if(location == DIRECT_VERIFY) {//task type 1 e diretto sul  cloud(non interrotto)
+            state->num_user_verify++;
+            state->num_balls_icecream_type1--;
+        } else if(location == DIRECT_MULTISERVER){ //arrivo task gelato 1 gusto verso multiserver
+            state->num_user_multiserver++;
+            state->num_user_icecream_type1++;
+        } else if(location == DIRECT_DELAY){
+            state->num_user_delay++;
+            state->num_balls_icecream_type1 = MAX_ICECREAM_TUB;
         } else {//task type 1 e non diretto sul cloud(non interrotto)
             handle_error_with_exit("error\n");
         }
     }else if(task_type == TASK_TYPE2){ //task 2 gusti gelato.
-        //do 2 gusti
+        state->num_task_icecream2++;
+        if(location == DIRECT_CASSA) { //arrivo task gelato 1 gusto verso cassa
+            state->num_user_cassa++;
+            state->num_user_total++;
+        } else if(location == DIRECT_VERIFY) {//task type 1 e diretto sul  cloud(non interrotto)
+            state->num_user_verify++;
+            state->num_balls_icecream_type2--;
+        } else if(location == DIRECT_MULTISERVER){ //arrivo task gelato 1 gusto verso multiserver
+            state->num_user_multiserver++;
+            state->num_user_icecream_type2++;
+        } else if(location == DIRECT_DELAY){
+            state->num_user_delay++;
+            state->num_balls_icecream_type2 = MAX_ICECREAM_TUB;
+        } else {//task type 1 e non diretto sul cloud(non interrotto)
+            handle_error_with_exit("error\n");
+        }
     } else { //task 3 gusti gelato.
-        state->num_task_type2++;
-
-        if (location == DIRECT_CLOUDLET) {//task tipo 2 non interrotto e diretto sulla cloudlet
-            state->n2++;
-            state->num_task_cloudlet++;
-            state->num_task_type2_cloudlet++;
-        } else if (location == DIRECT_CLOUD) {//task tipo 2 non interrotto e diretto sul cloud
-            state->n2_cloud++;
-            state->num_task_cloud++;
-            state->num_task_directed_on_cloud++;
-            state->num_task_type2_cloud++;
-            state->num_task_type2_directed_on_cloud++;
-        } else {//task tipo 2 non interrotto e non diretto sul cloud
+        state->num_task_icecream3++;
+        if(location == DIRECT_CASSA) { //arrivo task gelato 1 gusto verso cassa
+            state->num_user_cassa++;
+            state->num_user_total++;
+        } else if(location == DIRECT_VERIFY) {//task type 1 e diretto sul  cloud(non interrotto)
+            state->num_user_verify++;
+            state->num_balls_icecream_type3--;
+        } else if(location == DIRECT_MULTISERVER){ //arrivo task gelato 1 gusto verso multiserver
+            state->num_user_multiserver++;
+            state->num_user_icecream_type3++;
+        } else if(location == DIRECT_DELAY){
+            state->num_user_delay++;
+            state->num_balls_icecream_type3 = MAX_ICECREAM_TUB;
+        } else {//task type 1 e non diretto sul cloud(non interrotto)
             handle_error_with_exit("error\n");
         }
     }
-    */
+    
     return;
 }
 
@@ -104,6 +122,196 @@ void initialize_area(struct area *area) {//inizializza la struct area
     memset(area, 0, sizeof(struct area));
 }
 
+double get_time_service_cassa(char task_type){
+    /**
+     * Il metodo va a determinare qunato impiega un task per essere completato
+     * nella cassa.
+     */
+    double service;
+    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
+        handle_error_with_exit("error in get_time_service_cassa\n");
+    }
+    if (task_type == TASK_TYPE1) {//il job è di tipo 1
+        SelectStream(STREAM_SERV_CASSA1);//selezionare stream servizio1 
+        service = Exponential(1 / SERVICEONE);//genera servizio
+        //service=Exponential(1/SERVICEONE);
+    } else if(task_type == TASK_TYPE2) {//il job è di tipo 2
+        SelectStream(STREAM_SERV_CASSA2);//seleziona stream servizio2 
+        service = Exponential(1 / SERVICETWO);//genera servizio
+        //service=Exponential(1/SERVICETWO);
+    } else {
+        SelectStream(STREAM_SERV_CASSA3);//seleziona stream servizio3 
+        service = Exponential(1 / SERVICETHREE);//genera servizio
+    }
+
+    return service;
+
+}
+
+double get_time_service_verify(char task_type){
+    /**
+     * Il metodo va a determinare qunato impiega un task per essere completato
+     * nella verifica.
+     */
+    double service;
+    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
+        handle_error_with_exit("error in get_time_service_verify\n");
+    }
+    if (task_type == TASK_TYPE1) {//il job è di tipo 1
+        SelectStream(STREAM_SERV_VERIFY1);//selezionare stream servizio1 
+        service = Exponential(1 / SERVICEONE);//genera servizio
+        //service=Exponential(1/SERVICEONE);
+    } else if(task_type == TASK_TYPE2) {//il job è di tipo 2
+        SelectStream(STREAM_SERV_VERIFY2);//seleziona stream servizio2 
+        service = Exponential(1 / SERVICETWO);//genera servizio
+        //service=Exponential(1/SERVICETWO);
+    } else {
+        SelectStream(STREAM_SERV_VERIFY3);//seleziona stream servizio3
+        service = Exponential(1 / SERVICETHREE);//genera servizio
+    }
+
+    return service;
+
+}
+
+double get_time_service_multiserver(char task_type){
+    /**
+     * Il metodo va a determinare qunato impiega un task per essere completato
+     * nel multiserver.
+     */
+    double service;
+    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
+        handle_error_with_exit("error in get_time_service_multiserver\n");
+    }
+    if (task_type == TASK_TYPE1) {//il job è di tipo 1
+        SelectStream(STREAM_SERV_MULTISERVER1);//selezionare stream servizio1 
+        service = Exponential(1 / SERVICEONE);//genera servizio
+        //service=Exponential(1/SERVICEONE);
+    } else if(task_type == TASK_TYPE2) {//il job è di tipo 2
+        SelectStream(STREAM_SERV_MULTISERVER2);//seleziona stream servizio2 
+        service = Exponential(1 / SERVICETWO);//genera servizio
+        //service=Exponential(1/SERVICETWO);
+    } else {
+        SelectStream(STREAM_SERV_MULTISERVER3);//seleziona stream servizio3
+        service = Exponential(1 / SERVICETHREE);//genera servizio
+    }
+
+    return service;
+
+}
+
+double get_time_service_delay(char task_type){
+    /**
+     * Il metodo va a determinare qunato impiega un task per essere completato
+     * nel server Delay.
+     */
+    double service;
+    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
+        handle_error_with_exit("error in get_time_service_delay\n");
+    }
+    if (task_type == TASK_TYPE1) {//il job è di tipo 1
+        SelectStream(STREAM_SERV_DELAY1);//selezionare stream servizio1 
+        service = Exponential(1 / SERVICEONE);//genera servizio
+        //service=Exponential(1/SERVICEONE);
+    } else if(task_type == TASK_TYPE2) {//il job è di tipo 2
+        SelectStream(STREAM_SERV_DELAY2);//seleziona stream servizio2 
+        service = Exponential(1 / SERVICETWO);//genera servizio
+        //service=Exponential(1/SERVICETWO);
+    } else {
+        SelectStream(STREAM_SERV_DELAY3);//seleziona stream servizio3 
+        service = Exponential(1 / SERVICETHREE);//genera servizio
+    }
+
+    return service;
+
+}
+
+double assign_task_to_cassa(double time_current,char task_type,struct node**head,struct node**tail){
+    /**
+     * Il metodo va ad assegnare un task alla cassa andando ad allocare uno spoazio all'interno della
+     * lista dinamica della cassa, andando ad impostare il tempo di completamento di quel task.
+     */
+    double time_end_service = time_current + get_time_service_cassa(task_type);
+    insert_ordered(time_end_service, task_type, time_current, 0, head, tail);
+    return;
+}
+
+double assign_task_to_verify(double time_current,char task_type,struct node**head,struct node**tail){
+    /**
+     * Il metodo va ad assegnare un task alla cassa andando ad allocare uno spoazio all'interno della
+     * lista dinamica della cassa, andando ad impostare il tempo di completamento di quel task.
+     */
+    double time_end_service = time_current + get_time_service_verify(task_type);
+    insert_ordered(time_end_service, task_type, time_current, 0, head, tail);
+    return;
+}
+
+double assign_task_to_multiserver(double time_current,char task_type,struct node**head,struct node**tail){
+    /**
+     * Il metodo va ad assegnare un task alla cassa andando ad allocare uno spoazio all'interno della
+     * lista dinamica della cassa, andando ad impostare il tempo di completamento di quel task.
+     */
+    double time_end_service = time_current + get_time_service_multiserver(task_type);
+    insert_ordered(time_end_service, task_type, time_current, 0, head, tail);
+    return;
+}
+
+double assign_task_to_delay(double time_current,char task_type,struct node**head,struct node**tail){
+    /**
+     * Il metodo va ad assegnare un task alla cassa andando ad allocare uno spoazio all'interno della
+     * lista dinamica della cassa, andando ad impostare il tempo di completamento di quel task.
+     */
+    double time_end_service = time_current + get_time_service_delay(task_type);
+    insert_ordered(time_end_service, task_type, time_current, 0, head, tail);
+    return;
+}
+
+double get_arrival_cassa(char task_type){
+     if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
+        handle_error_with_exit("error in get_arrival\n");
+    }
+    const double mean[3] = {1 / ARRIVALONE, 1 / ARRIVALTWO, 1/ARRIVALTHREE};//mean exp=1/freq
+    static double arrivals[3] = {START, START, START};
+    static int init = 0;
+    double arrival;
+    if (init < 3) {//inizializza le tre diverse tipologie di arrivo,blocco di codice eseguito solo tre volte
+        if (init == 0) {
+            SelectStream(STREAM_ARR1);
+            arrivals[0] += Exponential(mean[0]);
+            init++;
+            return arrivals[0];
+        }
+        if (init == 1) {
+            SelectStream(STREAM_ARR2);
+            arrivals[1] += Exponential(mean[1]);
+            init++;
+            return arrivals[1];
+        }
+        if(init == 2){
+            SelectStream(STREAM_ARR2);
+            arrivals[1] += Exponential(mean[2]);
+            init++;
+            return arrivals[2];
+        }
+    }
+    if (task_type == TASK_TYPE1) {//arrivo di tipo 1
+        SelectStream(STREAM_ARR1);
+        arrivals[0] += Exponential(mean[0]);
+        arrival = arrivals[0];
+    } else if(task_type == TASK_TYPE2) { //Arrivo di tipo 3
+        SelectStream(STREAM_ARR2);
+        arrivals[1] += Exponential(mean[1]);
+        arrival = arrivals[1];
+    }
+    else {//arrivo di tipo 3
+        SelectStream(STREAM_ARR3);
+        arrivals[2] += Exponential(mean[2]);
+        arrival = arrivals[2];
+    }
+    return arrival;
+}
+
+/*
 double get_arrival_cloudlet(char task_type, char new_replication) {//genera un arrivo di tipo 1 o di tipo 2
     if (task_type != 1 && task_type != 2) {
         handle_error_with_exit("error in get_arrival\n");
@@ -195,6 +403,7 @@ void assign_task_to_cloud(double time_current, char task_type, struct node **hea
     insert_ordered(time_end_service, task_type, time_current, time_lost_in_cloudlet, head, tail);
     return;
 }
+*/
 
 double
 find_next_termination(struct node *head, char *task_type_termination) {//ritorna INF se la lista dinamica è vuota,

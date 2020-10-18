@@ -58,7 +58,7 @@ struct area{ //tipi di aree (calcolo ottenuto non dall'integrale ma dalla forma 
     double cassa;
     double verifica;
     double multiserver;
-    double delay-server;
+    double delay_server;
 };
 
 #define START 0.0 //istante inizio simulazione
@@ -82,16 +82,36 @@ struct area{ //tipi di aree (calcolo ottenuto non dall'integrale ma dalla forma 
 //streams per arrivi e servizi
 #define STREAM_ARR1 0
 #define STREAM_ARR2 10
-#define STREAM_SERV_CLOUDLET1 20
-#define STREAM_SERV_CLOUDLET2 30
-#define STREAM_SERV_CLOUD1  40
-#define STREAM_SERV_CLOUD2  50
-#define STREAM_SETUP 60
+#define STREAM_ARR3 20
+
+#define STREAM_SERV_CASSA1 30
+#define STREAM_SERV_CASSA2 40
+#define STREAM_SERV_CASSA3 50
+
+#define STREAM_SERV_DELAY1 60
+#define STREAM_SERV_DELAY2 70
+#define STREAM_SERV_DELAY3 80
+
+#define STREAM_SERV_MULTISERVER1 90
+#define STREAM_SERV_MULTISERVER2 100
+#define STREAM_SERV_MULTISERVER3 110
+
+#define STREAM_SERV_VERIFY1 120
+#define STREAM_SERV_VERIFY2 130
+#define STREAM_SERV_VERIFY3 140
+
+#define STREAM_SETUP 1500
+
+
+
 
 //constants
 #define TASK_TYPE1 1    //1 gusto gelato
 #define TASK_TYPE2 2    //2 gusti gelato   
 #define TASK_TYPE3 3    //3 gusti gelato
+
+//valore massimo vaschetta di gelato
+#define MAX_ICECREAM_TUB 30
 
 //locazioni all'iterno della rete
 #define DIRECT_CASSA 1          //task diretto alla cassa
