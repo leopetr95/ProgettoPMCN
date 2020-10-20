@@ -39,8 +39,10 @@ int main(int argc,char *argv[]){
     char task_type_next_cloud_termination = 0;
 
     double next_arrival;//prossimo arrivo
-    double next_arrival_type1 = get_arrival_cloudlet(1, 1);//prossimo arrivo di tipo 1
-    double next_arrival_type2 = get_arrival_cloudlet(2, 0);//prossimo arrivo di tipo 2
+
+    double next_arrival_type1 = get_arrival_cassa(0);//prossimo arrivo gelato 1 gusto
+    double next_arrival_type2 = get_arrival_cassa(1);//prossimo arrivo gelato 2 gusti
+    double next_arrival_type2 = get_arrival_cassa(2);//prossimo arrivo gelato 3 gusti
 
     double next_cloudlet_termination = INF;//prossimo completamento sulla cloudlet
     double next_cloud_termination = INF;//prossimo completamento sul cloud
@@ -50,7 +52,7 @@ int main(int argc,char *argv[]){
 
     struct node *cloud_head = NULL;//testa della lista dinamica dei server nel cloud
     struct node *cloud_tail = NULL;//coda della lista dinamica dei server nel cloud
-//
+
     //alloca array per batch means
     double* response_batch=alloc_array_double(NUM_BATCH);
     double* response_type1_batch = alloc_array_double(NUM_BATCH);
@@ -72,6 +74,8 @@ int main(int argc,char *argv[]){
     double* resp_cloudlet=alloc_array_double(NUM_BATCH);
     double* average_pop_cloud=alloc_array_double(NUM_BATCH);
     double* average_pop_cloudlet=alloc_array_double(NUM_BATCH);
+
+    double* 
 
     while (time_current < STOP || state.n1 > 0 || state.n2 > 0 || state.n1_cloud > 0 ||
            state.n2_cloud > 0) {//finquando non termina la simulazione o ci sono job nel sistema

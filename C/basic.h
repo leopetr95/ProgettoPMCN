@@ -3,55 +3,68 @@
 #define PROG_BASIC_H
 //
 struct state{//variabili di stato
-    int num_user_cassa;
+
+    int num_user_cassa;  //numero di utenti nella cassa attualmente
     int num_user_verify;
     int num_user_multiserver;
     int num_user_delay;
     int num_user_lost;
     int num_user_total;
 
-    int num_user_icecream_type1;
+    int num_user_icecream_type1; //numero utenti nel multiserver per un task di tipo 1
     int num_user_icecream_type2;
     int num_user_icecream_type3;
 
-    int num_balls_icecream_type1;
+    int num_balls_icecream_type1; //numero di palline di gelato1 attuali
     int num_balls_icecream_type2;
     int num_balls_icecream_type3;
 
-    int num_task_arrived;
+    int num_task_arrived; //numero totale di job arrivati nel sistema
 
-    int num_task_icecream1;
+    int num_task_icecream1; //nmero di job per un gelato1 gusto.
     int num_task_icecream2;
     int num_task_icecream3;
 
 };
 //??
 struct last_state{
-    int last_num_task_completed;
-    int last_num_task_arrived;
-    int last_num_task1_arrived;
-    int last_num_task2_arrived;
-    int last_num_type1_completed;
-    int last_num_type2_completed;
+
+    int last_num_task_completed; //numero di task completati in generale nell'evento precedente
+    int last_num_task_arrived; //numero di task arrivati in generale nell'evento precendete
+
+    int last_num_icecream1_arrived; //numero di task arrivati per gelato 1 gusto nell'evento precedente
+    int last_num_icecream2_arrived;
+    int last_num_icecream3_arrived;
+
+    int last_num_icecream1_completed; //numero di task completati per un gelato ad 1 gusto nell'evento precedente
+    int last_num_icecream2_completed;
+    int last_num_icecream3_completed;
+
     int last_area;
-    int last_task_arrived;
-    int last_num_type1_cloudlet;
-    int last_num_type2_cloudlet;
-    int last_num_type1_cloud;
-    int last_num_type2_cloud;
-    double last_area_cloud_type1;
-    int last_num_task_type1_cloud;
-    double last_area_cloud_type2;
-    int last_num_task_type2_cloud;
-    double last_area_cloudlet_type1;
-    double last_area_cloudlet_type2;
-    int last_num_task_type1_cloudlet;
-    int last_num_task_type2_cloudlet;
-    double old_area_cloud;
-    double old_area_cloudlet;
-    double last_area_type1;
-    double last_area_type2;
-    double last_obs;
+    int last_task_arrived; //identifica esattamente l'ultimo task arrivato nel sistema
+
+    int last_num_user_cassa; //numero di utenti nella cassa nell'evento precedente
+    int last_num_user_verify;
+    int last_num_user_multiserver;
+    int last_num_user_delay;
+    int last_num_user_lost;
+    int last_num_user_total;
+
+    double last_area_cassa; //valore dell'area della cassa nell'evento precedente
+    double last_area_verify;
+    double last_area_multiserver;
+    double last_area_delay_server;
+
+    int last_num_ball_icecream1; //numero di palline di gelato di gusto 1 fino all'evento precedente
+    int last_num_ball_icecream2;
+    int last_num_ball_icecream3;
+
+    int last_num_task_cassa;  //identifica il numero di job che ha avuto la cassa fino all'evento precedente
+    int last_num_task_verify;
+    int last_num_task_multiserver;
+    int last_num_task_delay_server;
+
+
 };
 struct area{ //tipi di aree (calcolo ottenuto non dall'integrale ma dalla forma esplicita)
     double system;

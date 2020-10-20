@@ -267,7 +267,12 @@ double assign_task_to_delay(double time_current,char task_type,struct node**head
 }
 
 double get_arrival_cassa(char task_type){
-     if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
+    /**
+     * Il metodo determina l'arrivo di un Task nel
+     * Server cassa.
+     */ 
+
+    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
         handle_error_with_exit("error in get_arrival\n");
     }
     const double mean[3] = {1 / ARRIVALONE, 1 / ARRIVALTWO, 1/ARRIVALTHREE};//mean exp=1/freq
@@ -305,6 +310,57 @@ double get_arrival_cassa(char task_type){
     }
     else {//arrivo di tipo 3
         SelectStream(STREAM_ARR3);
+        arrivals[2] += Exponential(mean[2]);
+        arrival = arrivals[2];
+    }
+    return arrival;
+}
+//Serve effettivamente questo metodo? in questo caso è come se un job arrivasse direttamente alla verifica 
+//Senza passare per la cassa. 
+double get_arrival_verify(char task_type){
+    /**
+     * Il metodo determina l'arrivo di un Task nel
+     * Server di verifica.
+     */ 
+    if (task_type != TASK_TYPE1 && task_type != TASK_TYPE2 && task_type != TASK_TYPE3) {
+        handle_error_with_exit("error in get_arrival\n");
+    }
+    const double mean[3] = {1 / ARRIVALONE, 1 / ARRIVALTWO, 1/ARRIVALTHREE};//mean exp=1/freq
+    static double arrivals[3] = {START, START, START};
+    static int init = 0;
+
+    double arrival;
+    if (init < 3) {//inizializza le tre diverse tipologie di arrivo,blocco di codice eseguito solo tre volte
+        if (init == 0) {
+            SelectStream(STREAM_SERV_VERIFY1);
+            arrivals[0] += Exponential(mean[0]);
+            init++;
+            return arrivals[0];
+        }
+        if (init == 1) {
+            SelectStream(STREAM_SERV_VERIFY2);
+            arrivals[1] += Exponential(mean[1]);
+            init++;
+            return arrivals[1];
+        }
+        if(init == 2){
+            SelectStream(STREAM_SERV_VERIFY3);
+            arrivals[1] += Exponential(mean[2]);
+            init++;
+            return arrivals[2];
+        }
+    }
+    if (task_type == TASK_TYPE1) {//arrivo di tipo 1
+        SelectStream(STREAM_SERV_VERIFY1);
+        arrivals[0] += Exponential(mean[0]);
+        arrival = arrivals[0];
+    } else if(task_type == TASK_TYPE2) { //Arrivo di tipo 3
+        SelectStream(STREAM_SERV_VERIFY2);
+        arrivals[1] += Exponential(mean[1]);
+        arrival = arrivals[1];
+    }
+    else {//arrivo di tipo 3
+        SelectStream(STREAM_SERV_VERIFY3);
         arrivals[2] += Exponential(mean[2]);
         arrival = arrivals[2];
     }
