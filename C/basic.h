@@ -8,22 +8,36 @@ struct state{//variabili di stato
     int num_user_verify;
     int num_user_multiserver;
     int num_user_delay;
-    int num_user_lost;
+    int num_user_lost;  //numero di utenti persi che sono usciti dal sistema durante la verifica
     int num_user_total;
 
+    //////////////////////////// forse
     int num_user_icecream_type1; //numero utenti nel multiserver per un task di tipo 1
     int num_user_icecream_type2;
     int num_user_icecream_type3;
+    ////////////////////////////
 
-    int num_balls_icecream_type1; //numero di palline di gelato1 attuali
-    int num_balls_icecream_type2;
-    int num_balls_icecream_type3;
+    int num_balls_icecream_type1; //numero di palline di gusto 1 attuali
+    //int num_balls_icecream_type2;
+    //int num_balls_icecream_type3;
 
-    int num_task_arrived; //numero totale di job arrivati nel sistema
+    //int num_task_arrived; //numero totale di job arrivati nel sistema
 
-    int num_task_icecream1; //nmero di job per un gelato1 gusto.
+    ///////////////////////////// forse
+    int num_task_icecream1; //numero di job per un gelato 1 gusto.
     int num_task_icecream2;
     int num_task_icecream3;
+    ////////////////////////////
+
+    ///variabili di stato multiserver///
+    ///stato di ogni server che fa parte del multiserver//
+    int is_server_1_buisy;
+    int is_server_2_buisy;
+    int is_server_3_buisy;
+
+    int is_queue_empty;
+    //////////////////////////////////
+
 
 };
 //??

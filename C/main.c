@@ -75,7 +75,7 @@ int main(int argc,char *argv[]){
     double* average_pop_cloud=alloc_array_double(NUM_BATCH);
     double* average_pop_cloudlet=alloc_array_double(NUM_BATCH);
 
-    double* 
+    //double* 
 
     while (time_current < STOP || state.n1 > 0 || state.n2 > 0 || state.n1_cloud > 0 ||
            state.n2_cloud > 0) {//finquando non termina la simulazione o ci sono job nel sistema
