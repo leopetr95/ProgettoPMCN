@@ -28,6 +28,12 @@ void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi
     exit(EXIT_FAILURE);
 }
 
+int dio(int i){
+
+    return i;
+
+}
+
 double max(double i,double j){//ritorna il valore massimo tra i e j
     if(i<=j){
         return j;
